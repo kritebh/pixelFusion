@@ -10,7 +10,7 @@ Check out the live PixelFusion app in action: [Live Link](https://pixelfusion.ve
 
 ## What is PixelFusion? 🚀
 
-PixelFusion is a powerful image conversion tool that empowers you to manipulate and transform your images right from your web browser. With an intuitive and user-friendly interface, it makes the process of converting images a breeze. Whether you want to resize, crop, apply filters, or perform other image transformations, PixelFusion has got you covered. And the best part? You don't need to rely on any external servers or third-party libraries – everything happens right on your device!
+PixelFusion is a powerful image conversion tool that empowers you to manipulate and transform your images right from your web browser. With an intuitive and user-friendly interface, it makes the process of converting images a breeze.And the best part? You don't need to rely on any external servers or third-party libraries – everything happens right on your device!
 
 ## Features 🎉
 
@@ -43,3 +43,9 @@ We welcome contributions to make PixelFusion even better! If you'd like to contr
 8. Our team will review your PR and provide feedback or merge it if everything looks good.
 
 9. Thanks for contributing to PixelFusion! 🙌
+
+
+Upcoming Features - 
+
+- Resize Image
+- RGBtoPNG
