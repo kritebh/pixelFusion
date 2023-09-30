@@ -47,5 +47,4 @@ We welcome contributions to make PixelFusion even better! If you'd like to contr
 
 Upcoming Features - 
 
-- Resize Image
 - RGBtoPNG
