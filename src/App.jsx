@@ -4,17 +4,22 @@ import Headers from "./Components/Headers";
 import ShowImage from "./Components/ShowImage";
 import OptionsSelect from "./Components/OptionsSelect";
 import ShowError from "./Components/ShowError";
+import ImageSize from "./Components/ImageSize";
 function App() {
   const [fileInfo, setFileInfo] = useState(null);
   const [outputFormat, setOutputFormat] = useState("png");
   const [error, setError] = useState("");
+  const [size, setSize] = useState({
+    height: 0,
+    width: 0,
+  });
 
   const handleFile = (e) => {
-    if(e.target.files[0]?.type.split('/')[0]!=='image'){
-      setError('Only image file is allowed');
+    if (e.target.files[0]?.type.split("/")[0] !== "image") {
+      setError("Only image file is allowed");
       return;
-    }else{
-      setError('');
+    } else {
+      setError("");
     }
     let fileName = e.target.files[0]?.name;
     let filePath = URL.createObjectURL(e.target.files[0]);
@@ -27,6 +32,11 @@ function App() {
         filePath: filePath,
         fileName: fileName,
       });
+      let imgSize = {
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+      };
+      setSize(imgSize);
     };
   };
 
@@ -60,13 +70,16 @@ function App() {
           handleOptions={handleOptions}
           outputFormat={outputFormat}
         />
+        {fileInfo && <ImageSize size={size} setSize={setSize} />}
 
-        {fileInfo && <button
-          onClick={() => convertImage(fileInfo, outputFormat)}
-          className={`bg-green-700 text-white py-2 px-4 my-2 rounded-md`}
-        >
-          Convert
-        </button>}
+        {fileInfo && (
+          <button
+            onClick={() => convertImage(fileInfo, outputFormat, size)}
+            className={`bg-green-700 text-white py-2 px-4 my-2 rounded-md`}
+          >
+            Convert
+          </button>
+        )}
 
         {fileInfo && <ShowImage fileInfo={fileInfo} />}
       </div>
