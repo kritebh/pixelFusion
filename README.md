@@ -44,7 +44,8 @@ We welcome contributions to make PixelFusion even better! If you'd like to contr
 
 9. Thanks for contributing to PixelFusion! 🙌
 
-
-Upcoming Features - 
+Upcoming Features* -
 
 - RGBtoPNG
+- Cropping
+- Filters
