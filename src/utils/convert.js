@@ -1,4 +1,4 @@
-export default function convertImage(fileInfo, outFormat, size) {
+export default function convertImage(fileInfo, outFormat, size, onComplete) {
   let canvas = document.createElement("canvas");
 
   let ctx = canvas.getContext("2d");
@@ -6,25 +6,25 @@ export default function convertImage(fileInfo, outFormat, size) {
   image.src = fileInfo.filePath;
   image.onload = () => {
     let maxWidth = size?.width;
-    let maxHeight = size?.height; 
+    let maxHeight = size?.height;
     let width = image.width;
     let height = image.height;
-  
+
     // Calculate the new dimensions to maintain the aspect ratio
     if (width > maxWidth) {
       height *= maxWidth / width;
       width = maxWidth;
     }
-  
+
     if (height > maxHeight) {
       width *= maxHeight / height;
       height = maxHeight;
     }
-  
+
     canvas.width = width;
     canvas.height = height;
 
-    ctx.drawImage(image, 0, 0,width,height);
+    ctx.drawImage(image, 0, 0, width, height);
 
     let outputUrl = "";
     if (outFormat === "svg") {
@@ -35,6 +35,7 @@ export default function convertImage(fileInfo, outFormat, size) {
     let name = fileInfo.fileName.split(".")[0];
 
     outputImage(outputUrl, name, outFormat);
+    if (typeof onComplete === "function") onComplete();
   };
 }
 

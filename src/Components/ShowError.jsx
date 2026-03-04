@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
 
-const ShowError = ({error}) => {
+const ShowError = ({ error }) => {
   return (
-    <div>
-        <p className='text-red-500'>{error}</p>
+    <div
+      className="w-full max-w-md px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium"
+      role="alert"
+    >
+      {error}
     </div>
-  )
-}
+  );
+};
 
-export default ShowError
+export default ShowError;
