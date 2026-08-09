@@ -17,28 +17,29 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 font-sans">
-          <div className="max-w-md w-full rounded-xl bg-white border border-slate-200 shadow-sm p-8 text-center">
-            <h1 className="text-xl font-semibold text-slate-800 mb-2">
-              Something went wrong
-            </h1>
-            <p className="text-slate-600 text-sm mb-6">
-              The app hit an error. Try refreshing the page.
+        <div className="flex min-h-screen flex-col items-center justify-center p-6">
+          <div className="card w-full max-w-md p-8 text-center">
+            <h1 className="text-xl font-bold text-slate-900">Something went wrong</h1>
+            <p className="mt-2 text-sm text-slate-600">
+              The converter hit an error. Your image never left this device, so
+              nothing was sent anywhere — but you will need to pick it again.
             </p>
-            <button
-              type="button"
-              onClick={() => this.setState({ hasError: false })}
-              className="text-sm text-green-600 hover:text-green-700 font-medium mr-4"
-            >
-              Try again
-            </button>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="text-sm bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-medium"
-            >
-              Reload page
-            </button>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => this.setState({ hasError: false })}
+                className="btn-outline"
+              >
+                Try again
+              </button>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="btn-primary py-2"
+              >
+                Reload the page
+              </button>
+            </div>
           </div>
         </div>
       );
