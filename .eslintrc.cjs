@@ -16,5 +16,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // This is a plain-JS app with no prop-types anywhere; the rule only ever
+    // reported noise, which is why `npm run lint` never passed.
+    'react/prop-types': 'off',
   },
 }
