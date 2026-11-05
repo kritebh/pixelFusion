@@ -1,7 +1,7 @@
 import { formatBytes } from "../utils/formats";
 import { DownloadIcon, SpinnerIcon } from "./icons";
 
-const SizeDelta = ({ from, to }) => {
+export const SizeDelta = ({ from, to }) => {
   const change = Math.round(((to - from) / from) * 100);
 
   if (Math.abs(change) < 2) {

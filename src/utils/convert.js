@@ -75,20 +75,28 @@ export const renderBlob = async ({ image, width, height, formatId, quality }) =>
 
   const canvas = drawToCanvas(image, width, height, format);
 
-  if (format.synthetic) return toSvgBlob(canvas);
+  try {
+    if (format.synthetic) return toSvgBlob(canvas);
 
-  const blob = await canvasToBlob(
-    canvas,
-    format.mime,
-    format.quality ? quality : undefined
-  );
+    const blob = await canvasToBlob(
+      canvas,
+      format.mime,
+      format.quality ? quality : undefined
+    );
 
-  // A browser that cannot encode the requested type silently returns a PNG.
-  // Refuse to pass that off as the format the user asked for.
-  if (blob.type !== format.mime) {
-    throw new Error(`This browser cannot encode ${format.label}.`);
+    // A browser that cannot encode the requested type silently returns a PNG.
+    // Refuse to pass that off as the format the user asked for.
+    if (blob.type !== format.mime) {
+      throw new Error(`This browser cannot encode ${format.label}.`);
+    }
+    return blob;
+  } finally {
+    // A batch encodes one canvas per file. Shrinking it to nothing returns its
+    // pixel memory now instead of whenever garbage collection runs, which keeps
+    // Safari under its total canvas-memory cap on long runs.
+    canvas.width = 0;
+    canvas.height = 0;
   }
-  return blob;
 };
 
 export const downloadBlob = (blob, filename) => {
