@@ -2,11 +2,17 @@
 
 PixelFusion is an amazing image converter app that operates seamlessly within your web browser, all without relying on any external servers! 🖼️
 
-## Screenshot 📸
+## Screenshots 📸
 
 Check out the live PixelFusion app in action: [Live Link](https://pixelfusion.vercel.app)
 
-![Screenshot](/screenshot.jpg)
+**Single image:** the converted file and its exact size are on screen before you save it.
+
+![PixelFusion converting a photo from JPEG to WebP, 75% smaller](/screenshot.jpg)
+
+**Bulk conversion:** a batch converted to WebP, each file with its result, ready to save as one ZIP.
+
+![PixelFusion converting five images to WebP in one batch](/screenshot-bulk.jpg)
 
 ## What is PixelFusion? 🚀
 

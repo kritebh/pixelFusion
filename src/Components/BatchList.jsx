@@ -7,19 +7,24 @@ import { CloseIcon, DownloadIcon, FolderIcon, LinkIcon, SpinnerIcon, UploadIcon 
 
 const Change = ({ from, to }) => {
   const change = Math.round(((to - from) / from) * 100);
+  // Never split "12% smaller" across two lines; the whole phrase wraps instead.
   if (!Number.isFinite(change) || Math.abs(change) < 2) {
-    return <span className="text-slate-500">same size</span>;
+    return <span className="whitespace-nowrap text-slate-500">same size</span>;
   }
   return change < 0 ? (
-    <span className="font-semibold text-emerald-700">{Math.abs(change)}% smaller</span>
+    <span className="whitespace-nowrap font-semibold text-emerald-700">{Math.abs(change)}% smaller</span>
   ) : (
-    <span className="font-semibold text-amber-700">{change}% larger</span>
+    <span className="whitespace-nowrap font-semibold text-amber-700">{change}% larger</span>
   );
 };
 
+// Non-breaking spaces keep "1600 × 1068" and "178 KB" whole, so a long row
+// wraps at the " · " separators instead of stranding a unit on its own line.
+const keep = (text) => String(text).replace(/ /g, "\u00a0");
+
 const Detail = ({ item, isCurrent, filename }) => {
-  const source =
-    item.width > 0 ? `${item.width} × ${item.height} · ${formatBytes(item.bytes)}` : formatBytes(item.bytes);
+  const size = keep(formatBytes(item.bytes));
+  const source = item.width > 0 ? `${keep(`${item.width} × ${item.height}`)} · ${size}` : size;
 
   if (item.status === "loading") {
     return (
@@ -51,7 +56,7 @@ const Detail = ({ item, isCurrent, filename }) => {
           {source}
           <span className="mx-1 text-slate-400">→</span>
           <span className="font-medium text-slate-700">
-            {filename} · {outcome.width} × {outcome.height} · {formatBytes(outcome.size)}
+            {filename} · {keep(`${outcome.width} × ${outcome.height}`)} · {keep(formatBytes(outcome.size))}
           </span>
           <span className="mx-1 text-slate-300">·</span>
           <Change from={item.bytes} to={outcome.size} />
