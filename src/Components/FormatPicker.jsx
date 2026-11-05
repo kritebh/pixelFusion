@@ -1,4 +1,3 @@
-import { getFormat } from "../utils/formats";
 import { CheckIcon } from "./icons";
 
 /**
@@ -16,7 +15,9 @@ const FormatPicker = ({
   onQualityChange,
   alphaWarning,
 }) => {
-  const selected = getFormat(value);
+  // Looked up in the list it was given, so callers can offer extra options
+  // such as bulk mode's "Keep original".
+  const selected = formats.find((format) => format.id === value);
 
   return (
     <fieldset>
@@ -61,7 +62,7 @@ const FormatPicker = ({
                 {format.available
                   ? isRecommended
                     ? "Recommended"
-                    : `.${format.ext}`
+                    : format.hint ?? `.${format.ext}`
                   : "Not supported here"}
               </span>
             </label>

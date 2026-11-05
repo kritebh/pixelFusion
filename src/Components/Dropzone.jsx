@@ -1,66 +1,72 @@
 import { useRef, useState } from "react";
 import { formatBytes } from "../utils/formats";
-import { UploadIcon } from "./icons";
+import { MAX_BATCH, asFolderPicker, collectDropped, collectPicked } from "../utils/sources";
+import useDropTarget from "../hooks/useDropTarget";
+import { FolderIcon, UploadIcon } from "./icons";
 
-const Dropzone = ({ fileInfo, onFile, onReset, resetCost }) => {
-  const [dragging, setDragging] = useState(false);
+/** Reads the picked files before the input is cleared for the next pick. */
+const pickedFrom = (event) => {
+  const files = Array.from(event.target.files ?? []);
+  event.target.value = "";
+  return files;
+};
+
+const Dropzone = ({ fileInfo, onIncoming, onReset, resetCost }) => {
   const [confirmingReset, setConfirmingReset] = useState(false);
-  const depth = useRef(0);
   const replaceRef = useRef(null);
+  const folderRef = useRef(null);
+  const { dragging, dragProps } = useDropTarget((data) => onIncoming(collectDropped(data)));
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-    depth.current = 0;
-    setDragging(false);
-    const file = event.dataTransfer?.files?.[0];
-    if (file) onFile(file);
-  };
-
-  const dragProps = {
-    onDragEnter: (event) => {
-      event.preventDefault();
-      depth.current += 1;
-      setDragging(true);
-    },
-    onDragLeave: () => {
-      depth.current = Math.max(0, depth.current - 1);
-      if (depth.current === 0) setDragging(false);
-    },
-    onDragOver: (event) => event.preventDefault(),
-    onDrop: handleDrop,
+  const handlePick = (event) => {
+    const files = pickedFrom(event);
+    if (files.length) onIncoming(collectPicked(files));
   };
 
   if (!fileInfo) {
     return (
-      <label
-        {...dragProps}
-        className={`flex cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 border-dashed p-8 text-center transition duration-150 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/20 sm:p-10 ${
-          dragging
-            ? "border-emerald-500 bg-emerald-50"
-            : "border-slate-300 bg-white/70 hover:border-emerald-400 hover:bg-emerald-50/40"
-        }`}
-      >
-        <input
-          type="file"
-          accept="image/*"
-          className="sr-only"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (file) onFile(file);
-            event.target.value = "";
-          }}
-        />
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-          <UploadIcon />
-        </span>
-        <span className="text-base font-semibold text-slate-900">
-          Drop an image here, or click to browse
-        </span>
-        <span className="hint max-w-sm">
-          PNG, JPEG, WebP, GIF, BMP or SVG — whatever your browser can open.
-          Nothing is uploaded, so there is no size limit or wait.
-        </span>
-      </label>
+      <div className="space-y-2.5">
+        <label
+          {...dragProps}
+          className={`flex cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 border-dashed p-8 text-center transition duration-150 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/20 sm:p-10 ${
+            dragging
+              ? "border-emerald-500 bg-emerald-50"
+              : "border-slate-300 bg-white/70 hover:border-emerald-400 hover:bg-emerald-50/40"
+          }`}
+        >
+          <input type="file" accept="image/*" multiple className="sr-only" onChange={handlePick} />
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+            <UploadIcon />
+          </span>
+          <span className="text-base font-semibold text-slate-900">
+            Drop images or a folder here, or click to browse
+          </span>
+          <span className="hint max-w-sm">
+            One image, several at once, or a whole folder of up to {MAX_BATCH}. PNG,
+            JPEG, WebP, GIF, BMP or SVG. Nothing is uploaded, so there is no size
+            limit or wait.
+          </span>
+        </label>
+
+        <div className="flex justify-center">
+          <button type="button" className="btn-ghost" onClick={() => folderRef.current?.click()}>
+            <FolderIcon />
+            Choose a folder
+          </button>
+          {/* The visible button is the control; this input only opens the picker. */}
+          <input
+            ref={(node) => {
+              folderRef.current = node;
+              asFolderPicker(node);
+            }}
+            type="file"
+            multiple
+            className="sr-only"
+            tabIndex={-1}
+            aria-hidden="true"
+            onChange={handlePick}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -104,11 +110,7 @@ const Dropzone = ({ fileInfo, onFile, onReset, resetCost }) => {
             type="file"
             accept="image/*"
             className="sr-only"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) onFile(file);
-              event.target.value = "";
-            }}
+            onChange={handlePick}
           />
           <button
             type="button"

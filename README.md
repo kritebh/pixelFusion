@@ -1,6 +1,6 @@
 # PixelFusion 🌟
 
-PixelFusion is an amazing image converter app that operates seamlessly within your web browser, all without relying on any external servers or third-party libraries! 🖼️
+PixelFusion is an amazing image converter app that operates seamlessly within your web browser, all without relying on any external servers! 🖼️
 
 ## Screenshot 📸
 
@@ -10,7 +10,7 @@ Check out the live PixelFusion app in action: [Live Link](https://pixelfusion.ve
 
 ## What is PixelFusion? 🚀
 
-PixelFusion is a powerful image conversion tool that empowers you to manipulate and transform your images right from your web browser. With an intuitive and user-friendly interface, it makes the process of converting images a breeze.And the best part? You don't need to rely on any external servers or third-party libraries – everything happens right on your device!
+PixelFusion is a powerful image conversion tool that empowers you to manipulate and transform your images right from your web browser. With an intuitive and user-friendly interface, it makes the process of converting images a breeze.And the best part? You don't need to rely on any external servers – everything happens right on your device! The only runtime dependency besides React is [client-zip](https://github.com/Touffy/client-zip) (2.6 kB gzipped), which builds the ZIP for bulk downloads and is loaded only when you save one.
 
 ## Features 🎉
 
@@ -21,6 +21,10 @@ PixelFusion is a powerful image conversion tool that empowers you to manipulate 
 - **Image Conversion**: Easily convert your images with various options like resizing, cropping, and applying filters.
 
 - **Live Preview**: See the changes in real-time as you adjust your image settings.
+
+- **Load From a Link**: Paste an image address (or up to 100 of them, one per line) instead of picking a file. Pressing ⌘V / Ctrl+V anywhere on the page works too, for copied images as well as links. Your browser downloads the image straight from the site that hosts it, so nothing passes through a server. Some sites forbid other pages from reading their images (CORS); for those, save the image and drop it in instead.
+
+- **Bulk Conversion**: Pick or drop up to 100 images, or a whole folder, and convert them in one go. Choose one output format (or keep each file's own format) and either keep every image's size or give them all one size. Files convert one at a time, a file that fails is marked with the reason while the rest carry on, and everything is saved as a single ZIP. Each file can also be saved on its own.
 
 ## How to Contribute 🤝
 
