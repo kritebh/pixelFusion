@@ -23,8 +23,11 @@ const Dropzone = ({ fileInfo, onIncoming, onReset, resetCost }) => {
   };
 
   if (!fileInfo) {
+    // Dropping takes files and folders alike. Clicking cannot: a browser picker
+    // selects either files or a folder, never both, so the zone opens the file
+    // picker and the folder picker sits inside it as a link.
     return (
-      <div className="space-y-2.5">
+      <div>
         <label
           {...dragProps}
           className={`flex cursor-pointer flex-col items-center gap-3 rounded-2xl border-2 border-dashed p-8 text-center transition duration-150 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/20 sm:p-10 ${
@@ -41,31 +44,37 @@ const Dropzone = ({ fileInfo, onIncoming, onReset, resetCost }) => {
             Drop images or a folder here, or click to browse
           </span>
           <span className="hint max-w-sm">
-            One image, several at once, or a whole folder of up to {MAX_BATCH}. PNG,
-            JPEG, WebP, GIF, BMP or SVG. Nothing is uploaded, so there is no size
-            limit or wait.
+            Up to {MAX_BATCH} at once. PNG, JPEG, WebP, GIF, BMP or SVG. Nothing is
+            uploaded, so there is no size limit or wait.
           </span>
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-emerald-700 underline decoration-emerald-300 underline-offset-4 transition-colors hover:text-emerald-800 hover:decoration-emerald-500"
+            onClick={(event) => {
+              // Keep the surrounding label from opening the file picker too.
+              event.preventDefault();
+              folderRef.current?.click();
+            }}
+          >
+            <FolderIcon />
+            Pick a whole folder instead
+          </button>
         </label>
 
-        <div className="flex justify-center">
-          <button type="button" className="btn-ghost" onClick={() => folderRef.current?.click()}>
-            <FolderIcon />
-            Choose a folder
-          </button>
-          {/* The visible button is the control; this input only opens the picker. */}
-          <input
-            ref={(node) => {
-              folderRef.current = node;
-              asFolderPicker(node);
-            }}
-            type="file"
-            multiple
-            className="sr-only"
-            tabIndex={-1}
-            aria-hidden="true"
-            onChange={handlePick}
-          />
-        </div>
+        {/* Outside the label, so the label keeps pointing at the file picker.
+            The link above is the control; this input only opens the dialog. */}
+        <input
+          ref={(node) => {
+            folderRef.current = node;
+            asFolderPicker(node);
+          }}
+          type="file"
+          multiple
+          className="sr-only"
+          tabIndex={-1}
+          aria-hidden="true"
+          onChange={handlePick}
+        />
       </div>
     );
   }
