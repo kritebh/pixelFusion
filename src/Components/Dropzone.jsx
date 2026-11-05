@@ -47,9 +47,16 @@ const Dropzone = ({ fileInfo, onIncoming, onReset, resetCost }) => {
             Up to {MAX_BATCH} at once. PNG, JPEG, WebP, GIF, BMP or SVG. Nothing is
             uploaded, so there is no size limit or wait.
           </span>
+
+          <span className="mt-1 flex w-full max-w-xs items-center gap-3 text-xs font-medium uppercase tracking-wide text-slate-400" aria-hidden="true">
+            <span className="h-px flex-1 bg-slate-200" />
+            or
+            <span className="h-px flex-1 bg-slate-200" />
+          </span>
+
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-emerald-700 underline decoration-emerald-300 underline-offset-4 transition-colors hover:text-emerald-800 hover:decoration-emerald-500"
+            className="btn-outline px-4"
             onClick={(event) => {
               // Keep the surrounding label from opening the file picker too.
               event.preventDefault();
@@ -57,7 +64,7 @@ const Dropzone = ({ fileInfo, onIncoming, onReset, resetCost }) => {
             }}
           >
             <FolderIcon />
-            Pick a whole folder instead
+            Choose a folder
           </button>
         </label>
 
